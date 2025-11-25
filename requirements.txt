@@ -1,6 +1,7 @@
 fastapi
-uvicorn
-pandas
+uvicorn[standard]
 numpy
+pandas
 scikit-learn
 joblib
+python-multipart
