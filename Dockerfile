@@ -1,17 +1,41 @@
-# Use official Python image
-FROM python:3.10
+# -----------------------------
+# Base Python Image
+# -----------------------------
+FROM python:3.10-slim
 
-# Set work directory
+# -----------------------------
+# Set working directory
+# -----------------------------
 WORKDIR /app
 
-# Copy all project files
-COPY . .
+# -----------------------------
+# Install system dependencies
+# -----------------------------
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
+# -----------------------------
+# Copy requirements
+# -----------------------------
+COPY requirements.txt .
+
+# -----------------------------
+# Install Python packages
+# -----------------------------
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port for Railway
+# -----------------------------
+# Copy application code
+# -----------------------------
+COPY . .
+
+# -----------------------------
+# Expose Railway Port
+# -----------------------------
 EXPOSE 8000
 
-# Run FastAPI with uvicorn
+# -----------------------------
+# Start FastAPI App using Uvicorn
+# -----------------------------
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
